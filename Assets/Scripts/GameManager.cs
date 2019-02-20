@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Restart() {
-		loadScene(SceneManager.GetActiveScene().name);
+		LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 	public void FinishGame() {
@@ -29,18 +29,18 @@ public class GameManager : MonoBehaviour {
 			String level = levels[i];
 
 			if (i == levels.Length - 1) {
-				loadScene("Menu");
+				LoadScene("Menu");
 				break;
 			}
 
 			if (level == currentLevel) {
-				loadScene(levels[i + 1]);
+				LoadScene(levels[i + 1]);
 				break;
 			}
 		}
 	}
 
-	private void loadScene(String level) {
+	public void LoadScene(String level) {
 		SceneManager.LoadScene(level);
 	}
 }

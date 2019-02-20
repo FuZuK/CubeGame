@@ -14,11 +14,11 @@ public class PlayerMovement : MonoBehaviour {
 		if (!gameManager.gameHasEnded) {
 			rb.AddForce(0, 0, forwardForce * Time.deltaTime);
 
-			if (Input.GetKey("d")) {
+			if (Input.GetKey("d") || Input.GetKey("right")) {
 				rb.AddForce(sideawaysForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
 			}
 
-			if (Input.GetKey("a")) {
+			if (Input.GetKey("a") || Input.GetKey("left")) {
 				rb.AddForce(-sideawaysForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
 			}
 
@@ -26,6 +26,10 @@ public class PlayerMovement : MonoBehaviour {
 				enabled = false;
 				FindObjectOfType<GameManager>().EndGame();
 			}
+		}
+
+		if (Input.GetKey("escape")) {
+			FindObjectOfType<GameManager>().LoadScene("Menu");
 		}
 	}
 }
