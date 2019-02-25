@@ -4,8 +4,19 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 	public GameObject panelFinish;
+	public GameObject obstaclePrefab;
+	public Transform groundTransform;
+	public Transform obstacleBasis;
+	public Transform transformFinish;
+
 	public bool gameHasEnded = false;
-	private String[] levels = { "Level1", "Level2", "Level3" };
+	public float gapLength = 10f;
+
+	public void Start() {
+		Debug.Log("Loaded game manager");
+		GenerateObstacles();
+		Debug.Log("Generated obstacles");
+	}
 
 	public void EndGame() {
 		if (!gameHasEnded) {
@@ -23,24 +34,33 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void LoadNextLevel() {
-		String currentLevel = SceneManager.GetActiveScene().name;
-
-		for (int i = 0; i < levels.Length; i++) {
-			String level = levels[i];
-
-			if (i == levels.Length - 1) {
-				LoadScene("Menu");
-				break;
-			}
-
-			if (level == currentLevel) {
-				LoadScene(levels[i + 1]);
-				break;
-			}
+		if (Persistance.Level == Persistance.MaxLevels) {
+			LoadScene("Menu");
+		} else {
+			Persistance.Level++;
+			Restart();
 		}
 	}
 
 	public void LoadScene(String level) {
 		SceneManager.LoadScene(level);
+	}
+
+	public void GenerateObstacles() {
+		System.Random random = new System.Random();
+		GameObject obstacle = null;
+		float left = -2.6f;
+		float right = 2.6f;
+
+		for (int i = 1; i <= Persistance.GetObstaclesNumber(); i++) {
+			Vector3 obstaclePosition = new Vector3((float) random.NextDouble() * (right - left) + left, 0f, gapLength * i);
+			obstacle = Instantiate(obstaclePrefab, obstacleBasis.position + obstaclePosition, obstacleBasis.rotation) as GameObject;
+		}
+
+		if (obstacle != null) {
+			float raceLength = obstacle.transform.position.z + gapLength;
+
+			transformFinish.position += new Vector3(0f, 0f, raceLength);
+		}
 	}
 }
