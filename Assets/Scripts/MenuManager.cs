@@ -75,6 +75,6 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	void startGame() {
-		SceneManager.LoadScene("Level1");
+		SceneManager.LoadScene("Level");
 	}
 }
